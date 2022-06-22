@@ -7,7 +7,7 @@ const SignupImageText = () => {
       <Image
         source={require('../../assets/LoginBanner.jpeg')}
         resizeMode="contain"
-        style={{height: 400, alignSelf: 'center'}}
+        style={{height: '100%', alignSelf: 'center'}}
       />
     </View>
   );
@@ -15,6 +15,7 @@ const SignupImageText = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    marginBottom: 15,
     flex: 1,
   },
   text: {

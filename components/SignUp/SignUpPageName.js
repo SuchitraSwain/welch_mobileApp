@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   View,
@@ -8,59 +8,40 @@ import {
   TextInput,
   StyleSheet,
   Image,
+  TouchableOpacity
 } from 'react-native';
-import SignupImageText from '../components/SignUp/SignupImageText';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
-
-const SignupPagePass = ({navigation}) => {
+const SignUpPageName = ({navigation}) => {
   const loginValidationSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(8, ({min}) => `Password must be at least ${min} characters`)
-      .required('Password is required'),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref('password'), null],
-      'Passwords must match',
-    ).required("This is required"),
+    fname: Yup.string().required('This field is required'),
+    lname: Yup.string().required('This field is required'),
   });
   return (
-    <SafeAreaView style={styles.SafeAreaView}>
+    <SafeAreaView>
       <ScrollView>
-        <SignupImageText />
         <View style={{marginTop: 30, padding: 20}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text style={styles.text}>emailid000@gmail.com</Text>
-            <Image
-              source={require('../assets/checkMarkIcon.png')}
-              style={{height: 20, width: 20}}
-              resizeMode="contain"
-            />
-          </View>
           <Formik
-            initialValues={{confirmPassword: '', password: ''}}
+            initialValues={{fname: '', lname: ''}}
             validationSchema={loginValidationSchema}
-            onSubmit={values => {console.log(values);
-              navigation.navigate("SignupPageGender")}}>
+            onSubmit={values => {
+              console.log(values);
+              navigation.navigate('SignupPageEmail');
+            }}>
             {({handleChange, handleBlur, handleSubmit, values, errors}) => (
               <View>
+                <Text style={styles.text}>Enter Your Name</Text>
                 <TextInput
-                  name="password"
-                  placeholder="Password"
-                  textContentType="password"
+                  name="fname"
+                  placeholder="First Name"
                   placeholderTextColor="#232323"
                   style={styles.textInput}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  secureTextEntry={true}
-                  autoCorrect={false}
+                  value={values.fname}
+                  autoCorrect={true}
+                  onChangeText={handleChange('fname')}
+                  onBlur={handleBlur('fname')}
                 />
-                {errors.password && (
+                {errors.fname && (
                   <Text
                     style={{
                       fontSize: 10,
@@ -68,21 +49,20 @@ const SignupPagePass = ({navigation}) => {
                       textAlign: 'center',
                       fontWeight: 'bold',
                     }}>
-                    {errors.password}
+                    {errors.fname}
                   </Text>
                 )}
                 <TextInput
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  textContentType="password"
+                  name="lname"
+                  placeholder="Last Name"
                   placeholderTextColor="#232323"
                   style={styles.textInput}
-                  onChangeText={handleChange('confirmPassword')}
-                  onBlur={handleBlur('confirmPassword')}
-                  value={values.confirmPassword}
-                  autoCorrect={false}
+                  value={values.lname}
+                  onChangeText={handleChange('lname')}
+                  onBlur={handleBlur('lname')}
+                  autoCorrect={true}
                 />
-                {errors.confirmPassword && (
+                {errors.lname && (
                   <Text
                     style={{
                       fontSize: 10,
@@ -90,15 +70,15 @@ const SignupPagePass = ({navigation}) => {
                       textAlign: 'center',
                       fontWeight: 'bold',
                     }}>
-                    {errors.confirmPassword}
+                    {errors.lname}
                   </Text>
                 )}
-                <Pressable style={styles.forwardButton} onPress={handleSubmit}>
+                <TouchableOpacity style={styles.forwardButton} onPress={handleSubmit}>
                   <Text
                     style={[styles.text, {fontSize: 18, fontWeight: 'bold'}]}>
                     {'>'}
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             )}
           </Formik>
@@ -143,11 +123,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
   },
-  otpContainer: {
-    backgroundColor: '#e0dcdc',
-    height: 70,
-    borderRadius: 5,
-    alignSelf: 'flex-start',
-  },
 });
-export default SignupPagePass;
+export default SignUpPageName;

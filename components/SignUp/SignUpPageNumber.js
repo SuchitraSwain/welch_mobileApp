@@ -8,49 +8,51 @@ import {
   TextInput,
   StyleSheet,
   Image,
+  TouchableOpacity
 } from 'react-native';
 import {Formik} from 'formik';
-import SignupImageText from '../components/SignUp/SignupImageText';
 import OTPTextView from 'react-native-otp-textinput';
 import * as Yup from 'yup';
 
-const SignupPageEmail = ({navigation}) => {
+const SignupPageNumber = ({navigation}) => {
+  const phoneRegex = RegExp(
+    /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
+  );
   const [isvalid, setIsvalid] = useState(false);
   const loginValidationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Please enter valid email')
-      .required('email cannot be empty'),
+    phoneNumber: Yup.string()
+      .matches(phoneRegex, 'Phone number is not valid')
+      .min(10, 'Mobile Number should be atleast 10 characters')
+      .required('Phone is required'),
   });
   return (
-    <SafeAreaView style={styles.SafeAreaView}>
+    <SafeAreaView >
       <ScrollView>
-        <SignupImageText />
         <View style={{marginTop: 30, padding: 20}}>
-          <Text style={styles.text}>Verify Email</Text>
+          <Text style={styles.text}>Verify Mobile Number</Text>
           <Formik
-            initialValues={{email: '', otp: ''}}
+            initialValues={{phoneNumber: '', otp: ''}}
             validationSchema={loginValidationSchema}
             onSubmit={values => {
               setIsvalid(true);
               if (isvalid && values.otp != '') {
                 console.log(values);
-                navigation.navigate("SignupPageNumber");
+                navigation.navigate("SignupPagePass")
               }
             }}>
             {({handleChange, handleBlur, handleSubmit, values, errors}) => (
               <View>
                 <TextInput
-                  name="email"
-                  placeholder="What's your email id?"
+                  name="phoneNumber"
+                  placeholder="What's your mobile number?"
                   placeholderTextColor="#232323"
                   style={styles.textInput}
-                  autoCorrect={true}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
+                  onChangeText={handleChange('phoneNumber')}
+                  onBlur={handleBlur('phoneNumber')}
+                  value={values.phoneNumber}
                   editable={!isvalid}
                 />
-                {errors.email && (
+                {errors.phoneNumber && (
                   <Text
                     style={{
                       fontSize: 10,
@@ -58,7 +60,7 @@ const SignupPageEmail = ({navigation}) => {
                       textAlign: 'center',
                       fontWeight: 'bold',
                     }}>
-                    {errors.email}
+                    {errors.phoneNumber}
                   </Text>
                 )}
                 {isvalid ? (
@@ -70,12 +72,24 @@ const SignupPageEmail = ({navigation}) => {
                 ) : (
                   <></>
                 )}
-                <Pressable style={styles.forwardButton} onPress={handleSubmit}>
-                  <Text
-                    style={[styles.text, {fontSize: 18, fontWeight: 'bold'}]}>
-                    {'>'}
-                  </Text>
-                </Pressable>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <TouchableOpacity>
+                    <Text style={[styles.text, {fontSize: 18}]}>SKIP</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.forwardButton}
+                    onPress={handleSubmit}>
+                    <Text
+                      style={[styles.text, {fontSize: 18, fontWeight: 'bold'}]}>
+                      {'>'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
           </Formik>
@@ -126,6 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0dcdc',
     height: 70,
     borderRadius: 5,
+    alignSelf: 'flex-start',
   },
 });
-export default SignupPageEmail;
+export default SignupPageNumber;

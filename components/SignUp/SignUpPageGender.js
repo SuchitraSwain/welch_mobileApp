@@ -7,9 +7,9 @@ import {
   Pressable,
   TextInput,
   StyleSheet,
+  TouchableOpacity,
   Image,
 } from 'react-native';
-import SignupImageText from '../components/SignUp/SignupImageText';
 import {Formik} from 'formik';
 import DatePicker from 'react-native-date-picker';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -28,9 +28,8 @@ const SignupPageGender = () => {
     },
   ];
   return (
-    <SafeAreaView style={styles.SafeAreaView}>
+    <SafeAreaView>
       <ScrollView>
-        <SignupImageText />
         <View style={{marginTop: 30, padding: 20}}>
           <View
             style={{
@@ -93,12 +92,12 @@ const SignupPageGender = () => {
                     values.gender = item.value;
                   }}
                 />
-                <Pressable style={styles.forwardButton} onPress={handleSubmit}>
+                <TouchableOpacity style={styles.forwardButton} onPress={handleSubmit}>
                   <Text
                     style={[styles.text, {fontSize: 18, fontWeight: 'bold'}]}>
                     {'>'}
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             )}
           </Formik>
