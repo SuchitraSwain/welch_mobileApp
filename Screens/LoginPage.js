@@ -12,9 +12,9 @@ import {
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
-const LoginPage = () => {
+const LoginPage = ({navigation}) => {
   const phoneRegex = RegExp(
-    /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
+    /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/,
   );
   const loginValidationSchema = Yup.object().shape({
     emailOrPhone: Yup.string().when('isEmail', {
@@ -22,7 +22,9 @@ const LoginPage = () => {
       then: Yup.string()
         .email('Please enter valid email')
         .required('email cannot be empty'),
-      otherwise: Yup.string().matches(phoneRegex, 'Phone number is not valid'),
+      otherwise: Yup.string()
+        .matches(phoneRegex, 'Phone number is not valid')
+        .required('Phone is required'),
     }),
     password: Yup.string()
       .min(8, ({min}) => `Password must be at least ${min} characters`)
@@ -39,7 +41,7 @@ const LoginPage = () => {
             style={{height: 400, alignSelf: 'center'}}
           />
           <Formik
-            initialValues={{emailOrPhone: '',isEmail: 0, password: ''}}
+            initialValues={{emailOrPhone: '', isEmail: 0, password: ''}}
             validationSchema={loginValidationSchema}
             onSubmit={values => console.log(values)}>
             {({handleChange, handleBlur, handleSubmit, values, errors}) => (
@@ -111,7 +113,7 @@ const LoginPage = () => {
             </Text>
             {'   '}Recover Account
           </Text>
-          <Pressable style={[styles.button, {marginTop: 15}]}>
+          <Pressable style={[styles.button, {marginTop: 15}]} onPress={()=>{navigation.navigate("SignUpPageName")}}>
             <Text style={[styles.text, {color: 'white'}]}>SIGN UP</Text>
           </Pressable>
           <Text
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Roboto',
     fontSize: 50,
-    textAlign:'center'
+    textAlign: 'center',
   },
   textInput: {
     alignSelf: 'stretch',
